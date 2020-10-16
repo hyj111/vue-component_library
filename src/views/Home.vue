@@ -6,7 +6,7 @@
     :visible.sync="dialogVisible"
     >
     </el-dialog>
-    <Form :formConfig="formConfig" :formData="formData" :formHandler="formHandler"/>
+    <Form :formConfig="formConfig" :formData="formData" :formHandler="formHandler" ref="vuForm"/>
   </div>
 </template>
 
@@ -141,11 +141,39 @@ export default {
         },
       ],
       // form表单按钮的配置
-      formHandler: [],
+      formHandler: [
+         {
+              type: "danger",
+              label: "编辑",
+              handler:(data) =>{console.log(data);}
+            },
+             {
+              type: "success",
+              label: "提交",
+              handler:()=>this.onSubmit()
+            },
+            {
+              type: "text",
+              label: "111",
+              handler:(data) =>{this.dialogVisible = true}
+            },
+      ],
       // form表单数据
       formData:[],
     };
   },
+  methods:{
+    onSubmit () {
+        this.$refs.vuForm.$refs.form.validate(valid => {
+        if (valid) {
+          alert("submit!!")
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    }
+  }
 };
 </script>
 

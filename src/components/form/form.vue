@@ -28,17 +28,17 @@
           :value="selectItem.value"
           :label="selectItem.label"
         ></el-option>
-        <!-- 按钮 -->
-        <el-form-item>
-          <el-button
-            :type="item.type"
-            v-for="item in formHandler"
-            :key="item.label"
-            @click="item.handler && item.handler()"
-            >{{ item.label }}</el-button
-          >
-        </el-form-item>
       </el-select>
+    </el-form-item>
+    <!-- 按钮 -->
+    <el-form-item>
+      <el-button
+        :type="item.type"
+        v-for="item in formHandler"
+        :key="item.label"
+        @click="item.handler && item.handler()"
+        >{{ item.label }}</el-button
+      >
     </el-form-item>
   </el-form>
 </template>
@@ -46,8 +46,7 @@
 <script>
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   props: {
     // 表单配置
@@ -83,6 +82,10 @@ export default {
       ];
       item.rules = requiredRules;
     },
+    // 重置表单
+    resetForm() {
+      this.$refs['form'].resetFields();
+    }
   },
   watch: {
     formConfig: {
