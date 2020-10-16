@@ -1,12 +1,16 @@
 <template>
   <div>
-    <!-- <Table :tableConfig="tableConfig" :tableData="tableData" /> -->
-    <el-dialog
+    <Table
+    :tableColumnConfig="table.tableColumnConfig"
+    :tableData="table.tableData"
+    :tableConfig="table.tableConfig"
+    />
+    <!-- <el-dialog
     title="提示"
     :visible.sync="dialogVisible"
     >
-    </el-dialog>
-    <Form :formConfig="formConfig" :formData="formData" :formHandler="formHandler"/>
+    </el-dialog> -->
+    <!-- <Form :formConfig="formConfig" :formData="formData" :formHandler="formHandler"/> -->
   </div>
 </template>
 
@@ -20,81 +24,110 @@ export default {
   },
   data() {
     return {
-      // 配置表格
-      tableConfig: [
-         {
-          label: 'ID',
-          prop: 'id'
+      table: {
+        // 配置表格列
+        tableColumnConfig: [
+          {
+            label: 'ID',
+            prop: 'id'
+          },
+          {
+            label: 'cloned',
+            prop: 'cloned'
+          },
+          {
+            label: '平台',
+            prop: 'platformId'
+          },
+          {
+            label: '渠道',
+            prop: 'channel'
+          },
+          {
+            label: '版本',
+            prop: 'appVersion'
+          },
+          {
+            label: '环境',
+            prop: 'env'
+          },
+          {
+            label: '当前配置版本',
+            prop: 'appcode'
+          },
+          {
+            label: '创建时间',
+            prop: 'createTime'
+          },
+          {
+            label: '更新时间',
+            prop: 'updateTime'
+          },
+          {
+            type: "operation",
+            label: "操作",
+            buttonGroup: [
+              {
+                type: "primary",
+                label: "编辑",
+                handler:(data) =>{console.log(data);}
+              },
+              {
+                type: "danger",
+                label: "编辑",
+                handler:(data) =>{this.dialogVisible = true}
+              },
+            ],
+          },
+        ],
+        // 配置表格
+        tableConfig: {
+          style: {},
+          border: true,
+          stripe: true,
+          'show-header': true,
+          // 'highlight-current-row': true
         },
-        {
-          label: 'cloned',
-          prop: 'cloned'
-        },
-        {
-          label: '平台',
-          prop: 'platformId'
-        },
-        {
-          label: '渠道',
-          prop: 'channel'
-        },
-        {
-          label: '版本',
-          prop: 'appVersion'
-        },
-        {
-          label: '环境',
-          prop: 'env'
-        },
-        {
-          label: '当前配置版本',
-          prop: 'appcode'
-        },
-        {
-          label: '创建时间',
-          prop: 'createTime'
-        },
-        {
-          label: '更新时间',
-          prop: 'updateTime'
-        },
-        {
-          type: "operation",
-          label: "操作",
-          buttonGroup: [
-            {
-              type: "danger",
-              label: "编辑",
-              handler:(data) =>{console.log(data);}
-            },
-             {
-              type: "danger",
-              label: "编辑",
-              handler:(data) =>{this.dialogVisible = true}
-            },
-            {
-              type: "text",
-              label: "111",
-              handler:(data) =>{this.dialogVisible = true}
-            },
-          ],
-        },
-      ],
-      // 表格数据
-      // tableData: [
-      //   {
-      //     appVersion: "980",
-      //     appcode: "1",
-      //     channel: "360zhushou",
-      //     cloned: "0",
-      //     createTime: "2019-09-16 14:53:44",
-      //     env: "全环境",
-      //     id: "175",
-      //     latestConfigVersion: 119,
-      //     platformId: "安卓",
-      //     updateTime: "2020-10-15 14:54:52",
-      //   },
-      // ],
+        // 表格数据
+        tableData: [
+          {
+            appVersion: "980",
+            appcode: "1",
+            channel: "360zhushou",
+            cloned: "0",
+            createTime: "2019-09-16 14:53:44",
+            env: "全环境",
+            id: "175",
+            latestConfigVersion: 119,
+            platformId: "安卓",
+            updateTime: "2020-10-15 14:54:52",
+          },
+          {
+            appVersion: "981",
+            appcode: "2",
+            channel: "360121232",
+            cloned: "0",
+            createTime: "2019-09-11 14:53:44",
+            env: "安卓",
+            id: "175",
+            latestConfigVersion: 119,
+            platformId: "安卓",
+            updateTime: "2020-10-15 14:54:52",
+          },
+          {
+            appVersion: "981",
+            appcode: "2",
+            channel: "360121232",
+            cloned: "0",
+            createTime: "2019-09-11 14:53:44",
+            env: "安卓",
+            id: "175",
+            latestConfigVersion: 119,
+            platformId: "安卓",
+            updateTime: "2020-10-15 14:54:52",
+          }
+        ]
+      },
       dialogVisible:false,
       // form 表单配置
       formConfig: [
