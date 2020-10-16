@@ -62,7 +62,6 @@
           :key="item.prop"
         ></el-table-column>
       </template>
-       
   </el-table>
   </div>
 </template>
@@ -75,7 +74,7 @@ export default {
   props: {
     tableConfig: {
       type: Array,
-      default: () => []
+      default: () => {}
     },
     tableColumnConfig: {
       type: Array,
