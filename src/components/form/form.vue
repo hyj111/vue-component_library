@@ -9,15 +9,39 @@
     >
       <!-- input -->
       <el-input
+        :style="{width:item.width || '215px'}"
         v-if="item.type === 'input'"
+        :disabled="item.disabled"
         :placeholder="item.placeholder"
         v-model.trim="formData[item.prop]"
       >
       </el-input>
+      <!-- textarea -->
+      <el-input
+        v-else-if="item.type==='textarea'"
+        type="textarea"
+        :rows="item.row"
+        :placeholder="item.placeholder"
+        v-model.trim="formData[item.prop]"
+        :disabled="item.disabled"
+      >     
+      </el-input>
+      <!-- 插槽 -->
+      <slot v-else-if="item.type==='slot'" :name="item.slotName"></slot>
+      <!-- 时间选择器 -->
+      <el-date-picker
+        v-else-if="item.type==='datetime'"
+        clearable
+        :editable="false"
+        v-model="formData[item.prop]"
+        :type="item.shape"
+        :value-format="item.format ||'timestamp'"
+      >
+      </el-date-picker>
       <!-- select -->
       <el-select
         filterable
-        v-if="item.type === 'select'"
+        v-else-if="item.type === 'select'"
         :placeholder="item.placeholder"
         v-model.trim="formData[item.prop]"
         :disabled="item.disabled"
@@ -70,6 +94,10 @@ export default {
         if (item.required) {
           this.rules(item);
         }
+        // 自定义检验规则
+        if (item.validator) {
+          item.rules = item.validator
+        }
       }
     },
     rules(item) {
@@ -80,7 +108,12 @@ export default {
           trigger: "blur",
         },
       ];
-      item.rules = requiredRules;
+         // 其他rules规则
+      if (item.rules && item.rules.length > 0) {
+        item.rules = requiredRules.concat(item.rules)
+      } else {
+        item.rules = requiredRules
+      }
     },
     // 重置表单
     resetForm() {

@@ -1,18 +1,18 @@
 <template>
   <div>
-    <Table :tableConfig="tableConfig" :tableData="tableData">
+    <!-- <Table :tableConfig="tableConfig" :tableData="tableData">
       <template v-slot:delete="slotData">
-        <el-popconfirm title="确定删除该数据吗？" @confirm="deleteData(slotData)">
+        <el-popconfirm title="确定删除该数据吗？" @onConfirm="del(slotData)">
           <el-link slot="reference" type="danger" :underline="false">删除</el-link>
         </el-popconfirm>
       </template>
-    </Table>
+    </Table> -->
     <el-dialog title="提示" :visible.sync="dialogVisible"> </el-dialog>
-    <!-- <Form :formConfig="formConfig" :formData="formData" :formHandler="formHandler" ref="vuForm"/> -->
-           <el-divider 
-                v-show="false"          
-                direction="vertical" 
-               ></el-divider>
+    <Form :formConfig="formConfig" :formData="formData" :formHandler="formHandler" ref="vuForm">
+      <template slot="logo">
+        
+      </template>
+    </Form>
   </div>
 </template>
 
@@ -25,6 +25,16 @@ export default {
     Form,
   },
   data() {
+        let validateUuid = (rule, value, callback) => {
+      const reg = /^[0-9a-zA-Z]*$/
+      if (!value) {
+        callback(new Error('uuid不能为空'))
+      } else if (!reg.test(value)) {
+        callback(new Error('uuid不能含有中文和符号'))
+      } else {
+        callback()
+      }
+    }
     return {
       // 配置表格
       tableConfig: [
@@ -175,73 +185,88 @@ export default {
       ],
       dialogVisible: false,
       // form 表单配置
-      // formConfig: [
-      //   {
-      //     type: "input",
-      //     label:"停车",
-      //     prop:"name1",
-      //     placeholder:"停车场名称",
-      //   },
-      //   {
-      //     type: "input",
-      //     label:"停车",
-      //     prop:"name2",
-      //     placeholder:"停车场名称",
-      //     requiredMsg:"请输入停车场名称",
-      //     required:true
-      //   },
-      //   {
-      //     type: "input",
-      //     label:"停车",
-      //     prop:"name3",
-      //     placeholder:"停车场名称",
-      //     required:true
-      //   },
-      //   {
-      //     type: "select",
-      //     label: "类型",
-      //     prop: "type",
-      //     required:true,
-      //      options: [
-      //       {
-      //         value: '1',
-      //         label: '1'
-      //       },
-      //       {
-      //         value: '8',
-      //         label: '8'
-      //       },
-      //       {
-      //         value: '12',
-      //         label: '12'
-      //       }
-      //     ]
-      //   },
-      // ],
+      formConfig: [
+        {
+          type: "input",
+          label:"uuid",
+          prop:"uuid",
+          validator: [{ validator: validateUuid, trigger: 'blur' }],
+          placeholder:"uuid",
+        },
+        {
+          type: "textarea",
+          label:"理由",
+          prop:"resaon",
+          required:true
+        },
+        {
+          type: "input",
+          label:"停车",
+          prop:"name3",
+          placeholder:"停车场名称",
+          required:true
+        },
+        {
+          type: "select",
+          label: "类型",
+          prop: "type",
+          required:true,
+           options: [
+            {
+              value: '1',
+              label: '1'
+            },
+            {
+              value: '8',
+              label: '8'
+            },
+            {
+              value: '12',
+              label: '12'
+            }
+          ]
+        },
+        {
+          type:"slot",
+          label:"图标",
+          slotName:"logo"
+        },
+        {
+          type:"datetime",
+          label:"时间",
+          prop:"time1"  
+        },
+        {
+          type:"datetime",
+          label:"时间",
+          prop:"time2" ,
+          format:"yyyy-MM-dd"
+        },
+      ],
       // form表单按钮的配置
-      // formHandler: [
-      //    {
-      //         type: "danger",
-      //         label: "编辑",
-      //         handler:(data) =>{console.log(data);}
-      //       },
-      //        {
-      //         type: "success",
-      //         label: "提交",
-      //         handler:()=>this.onSubmit()
-      //       },
-      //       {
-      //         type: "text",
-      //         label: "111",
-      //         handler:(data) =>{this.dialogVisible = true}
-      //       },
-      // ],
+      formHandler: [
+         {
+              type: "danger",
+              label: "编辑",
+              handler:(data) =>{console.log(data);}
+            },
+             {
+              type: "success",
+              label: "提交",
+              handler:()=>this.onSubmit()
+            },
+            {
+              type: "text",
+              label: "111",
+              handler:(data) =>{this.dialogVisible = true}
+            },
+      ],
       // form表单数据
-      formData: [],
+      formData: {},
     };
   },
   methods: {
-    deleteData(data){
+    del(data){
       console.log(data);
     },
     onSubmit() {
